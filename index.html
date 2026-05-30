@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>零零柒3D打印拖鞋 · 科技重塑每一步</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter','Noto Sans SC',sans-serif;background:#050510;color:#e0e8f0;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0a0a1e}::-webkit-scrollbar-thumb{background:#1e3a5f;border-radius:3px}
+#bg-canvas{position:fixed;top:0;left:0;z-index:0;pointer-events:none}
+section{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:6rem 2rem}
+.container{max-width:1200px;width:100%;margin:0 auto}
+.hero{text-align:center}
+.hero .badge{display:inline-block;padding:8px 24px;border:1px solid rgba(0,200,255,.4);border-radius:50px;font-size:.85rem;letter-spacing:.2em;color:#0cf;margin-bottom:2rem;backdrop-filter:blur(10px);animation:fadeInUp .8s}
+.hero h1{font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:1.1;margin-bottom:1.5rem;animation:fadeInUp .8s .15s both}
+.hero h1 .gradient{background:linear-gradient(135deg,#0cf,#6cf,#0ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .subtitle{font-size:clamp(1rem,1.5vw,1.3rem);color:rgba(255,255,255,.55);max-width:600px;margin:0 auto 2.5rem;line-height:1.7;animation:fadeInUp .8s .3s both}
+.cta-group{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:fadeInUp .8s .45s both}
+.btn-primary{display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#0cf,#06f);color:#fff;border:none;border-radius:50px;font-size:1.1rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .3s;position:relative;overflow:hidden}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(0,200,255,.35)}
+.btn-primary::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-100%);transition:transform .6s}
+.btn-primary:hover::after{transform:translateX(100%)}
+.btn-outline{display:inline-block;padding:16px 40px;border:1px solid rgba(0,200,255,.4);color:#0cf;border-radius:50px;font-size:1.1rem;font-weight:500;cursor:pointer;text-decoration:none;transition:all .3s;backdrop-filter:blur(10px)}
+.btn-outline:hover{border-color:#0cf;background:rgba(0,200,255,.08);transform:translateY(-3px)}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2rem;margin-top:4rem}
+.feature-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:24px;padding:2.5rem 2rem;transition:all .4s;position:relative;overflow:hidden;backdrop-filter:blur(10px)}
+.feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,200,255,.3),transparent);transition:opacity .4s;opacity:0}
+.feature-card:hover::before{opacity:1}
+.feature-card:hover{transform:translateY(-8px);border-color:rgba(0,200,255,.25);box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 30px rgba(0,200,255,.08)}
+.feature-card .icon{font-size:2.5rem;margin-bottom:1.2rem;filter:drop-shadow(0 0 10px rgba(0,200,255,.4))}
+.feature-card h3{font-size:1.3rem;font-weight:700;margin-bottom:.8rem;color:#fff}
+.feature-card p{color:rgba(255,255,255,.5);line-height:1.7;font-size:.95rem}
+.spec-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-top:3rem}
+.spec-item{text-align:center;padding:2rem;background:rgba(255,255,255,.02);border-radius:20px;border:1px solid rgba(255,255,255,.05)}
+.spec-item .num{font-size:2.8rem;font-weight:900;background:linear-gradient(180deg,#0cf,#06f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.spec-item .unit{font-size:1rem;color:#0cf;margin-left:4px}
+.spec-item .label{color:rgba(255,255,255,.45);margin-top:.5rem;font-size:.9rem}
+.showcase{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.showcase .info h2{font-size:clamp(2rem,3.5vw,3rem);font-weight:800;line-height:1.2;margin-bottom:1.5rem}
+.showcase .info h2 span{color:#0cf}
+.showcase .info p{color:rgba(255,255,255,.55);line-height:1.8;font-size:1.05rem}
+.showcase .visual{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.shoe-3d{width:100%;max-width:400px;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at center,rgba(0,150,255,.15),transparent 70%);display:flex;align-items:center;justify-content:center;font-size:12rem;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 30px 60px rgba(0,200,255,.25))}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+.stats-bar{display:flex;justify-content:center;gap:4rem;flex-wrap:wrap;margin-top:2rem;padding:2rem;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+.stat{text-align:center}
+.stat .val{font-size:2.2rem;font-weight:900;color:#0cf}
+.stat .tag{font-size:.8rem;color:rgba(255,255,255,.4);margin-top:.3rem;letter-spacing:.1em}
+.footer-cta{text-align:center;padding:6rem 2rem}
+.footer-cta h2{font-size:clamp(2rem,4vw,3rem);font-weight:800;margin-bottom:1rem}
+.footer-cta h2 span{color:#0cf}
+.footer-cta p{color:rgba(255,255,255,.4);margin-bottom:2rem}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(30px);transition:all .8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.grid-overlay{position:fixed;inset:0;background-image:linear-gradient(rgba(0,200,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,255,.03) 1px,transparent 1px);background-size:60px 60px;z-index:0;pointer-events:none;mask-image:radial-gradient(circle at 50% 50%,black 40%,transparent 70%)}
+@media(max-width:768px){.showcase{grid-template-columns:1fr;text-align:center;gap:2rem}.shoe-3d{font-size:8rem}.stats-bar{gap:2rem}}
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="grid-overlay"></div>
+<section class="hero">
+<div class="container">
+<div class="badge">✨ 零零柒 · 3D 打印科技</div>
+<h1>用 <span class="gradient">3D 打印</span><br>重新定义拖鞋</h1>
+<p class="subtitle">一体成型 · 仿生结构 · 云端设计到脚底，每一双都是独一无二的科技作品</p>
+<div class="cta-group">
+<a href="https://e.tb.cn/h.R6W9WOZt3stLJh5" target="_blank" class="btn-primary">🛒 立即购买</a>
+<a href="#features" class="btn-outline">探索科技 →</a>
+</div>
+<div class="stats-bar">
+<div class="stat"><div class="val">3D</div><div class="tag">打印一体成型</div></div>
+<div class="stat"><div class="val">200g</div><div class="tag">超轻重量</div></div>
+<div class="stat"><div class="val">∞</div><div class="tag">仿生结构</div></div>
+<div class="stat"><div class="val">7天</div><div class="tag">无理由退换</div></div>
+</div>
+</div>
+</section>
+<section id="features">
+<div class="container">
+<div style="text-align:center;margin-bottom:2rem">
+<div class="badge" style="margin-bottom:1.5rem">核心科技</div>
+<h2 style="font-size:clamp(2rem,3.5vw,3rem);font-weight:800">为什么选择<span style="color:#0cf"> 零零柒</span></h2>
+</div>
+<div class="features-grid">
+<div class="feature-card reveal"><div class="icon">🖨️</div><h3>3D 打印一体成型</h3><p>采用工业级 3D 打印技术，整鞋一体成型，无胶水、无缝合、无拼接，结构强度远超传统拖鞋。</p></div>
+<div class="feature-card reveal"><div class="icon">🪶</div><h3>极致轻盈</h3><p>仿生蜂窝结构设计，重量仅约 200g，穿在脚上几乎感觉不到存在，真正实现「赤足感」。</p></div>
+<div class="feature-card reveal"><div class="icon">🌬️</div><h3>动态透气系统</h3><p>数万个微孔组成的呼吸通道，空气随步伐流动，保持足部干爽，告别闷热和异味。</p></div>
+<div class="feature-card reveal"><div class="icon">🛡️</div><h3>减震动态支撑</h3><p>晶格结构根据足底压力分布智能变形，行走时吸收冲击力，站立时提供稳定支撑。</p></div>
+<div class="feature-card reveal"><div class="icon">🧬</div><h3>仿生足弓设计</h3><p>基于人体工学数据建模，精准贴合足弓曲线，分散足底压力，久穿不累。</p></div>
+<div class="feature-card reveal"><div class="icon">🧼</div><h3>防滑易清洁</h3><p>特种 TPU 材料 + 底部防滑纹理，湿滑地面稳如磐石。支持水洗，一冲即净。</p></div>
+</div>
+</div>
+</section>
+<section>
+<div class="container">
+<div style="text-align:center;margin-bottom:3rem">
+<div class="badge" style="margin-bottom:1.5rem">技术规格</div>
+<h2 style="font-size:clamp(2rem,3.5vw,3rem);font-weight:800">参数<span style="color:#0cf">一览</span></h2>
+</div>
+<div class="spec-row">
+<div class="spec-item reveal"><div class="num">200<span class="unit">g</span></div><div class="label">单只重量</div></div>
+<div class="spec-item reveal"><div class="num">95<span class="unit">%</span></div><div class="label">透气率</div></div>
+<div class="spec-item reveal"><div class="num">A+</div><div class="label">防滑等级</div></div>
+<div class="spec-item reveal"><div class="num">360<span class="unit">°</span></div><div class="label">柔韧弯折</div></div>
+</div>
+</div>
+</section>
+<section>
+<div class="container">
+<div class="showcase">
+<div class="info reveal">
+<h2>从<span>数字模型</span><br>到你的脚下</h2>
+<p>每一双零零柒拖鞋都经过精准的 3D 建模、拓扑优化和工业级打印。我们使用先进的晶格填充算法，在保证结构强度的前提下最大化轻量化和透气性。这不是流水线上的千篇一律，而是数字制造时代的设计民主化。</p>
+<div style="margin-top:2rem"><a href="https://e.tb.cn/h.R6W9WOZt3stLJh5" target="_blank" class="btn-primary">🛒 体验 3D 打印科技</a></div>
+</div>
+<div class="visual reveal"><div class="shoe-3d">🩴</div></div>
+</div>
+</div>
+</section>
+<section class="footer-cta">
+<div class="container reveal">
+<h2>准备好了吗？<br>体验<span> 3D 打印拖鞋</span>的魅力</h2>
+<p>男女通用 · 居家防滑 · 轻盈透气 · 7天无理由</p>
+<div style="margin-top:2rem"><a href="https://e.tb.cn/h.R6W9WOZt3stLJh5" target="_blank" class="btn-primary" style="font-size:1.3rem;padding:20px 60px">🛒 去淘宝下单</a></div>
+<p style="margin-top:1.5rem;font-size:.85rem;color:rgba(255,255,255,.3)">零零柒3D打印拖鞋 · 科技重塑每一步</p>
+</div>
+</section>
+<script>
+const canvas=document.getElementById('bg-canvas'),ctx=canvas.getContext('2d');let particles=[];function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}resize();window.addEventListener('resize',resize);class P{constructor(){this.reset();this.y=Math.random()*canvas.height}reset(){this.x=Math.random()*canvas.width;this.y=-10;this.s=.4+Math.random()*1.2;this.vy=.3+Math.random()*.6;this.op=.15+Math.random()*.25;this.hue=190+Math.random()*30}update(){this.y+=this.vy;this.x+=Math.sin(this.y*.008)*.4;if(this.y>canvas.height+10)this.reset()}draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle=`hsla(${this.hue},80%,60%,${this.op})`;ctx.fill()}}for(let i=0;i<100;i++){particles.push(new P());particles[i].y=Math.random()*canvas.height}function loop(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw()});requestAnimationFrame(loop)}loop();
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible')}})},{threshold:.15});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'})}));
+</script>
+</body>
+</html>
